@@ -16,15 +16,16 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.cos.mixin.config.auth.PrincipalDetails;
-import com.cos.mixin.model.User2;
-import com.cos.mixin.model.User2Repository;
+import com.cos.mixin.domain.user.User;
+import com.cos.mixin.domain.user.UserRepository;
+
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 
-	private User2Repository userRepository;
+	private UserRepository userRepository;
 	
 	
-	public JwtAuthorizationFilter(AuthenticationManager authenticationManager, User2Repository userRepository) {
+	public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
 		super(authenticationManager);
 		this.userRepository = userRepository;
 	}
@@ -32,7 +33,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		System.out.println("인증이나 권한이 필요한 주소 요청이 됨");
+
 		
 		String jwtHeader = request.getHeader(JwtProperties.HEADER_STRING);
 		System.out.println("jwtHeader : " + jwtHeader);
@@ -43,14 +44,20 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 			
 		}
 		
+		
+		System.out.println("인증이나 권한이 필요한 주소 요청이 됨");
+		
+		
 		String jwtToken = request.getHeader(JwtProperties.HEADER_STRING)
 				.replace(JwtProperties.TOKEN_PREFIX, "");
+		
+		
 		String username = 
 				JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(jwtToken)
 				.getClaim("username").asString();
 		
 		if(username !=null) {
-			User2 userEntity = userRepository.findByUsername(username);
+			User userEntity = userRepository.findByUserEmail(username);
 			
 			PrincipalDetails principalDetails = new PrincipalDetails(userEntity);
 			

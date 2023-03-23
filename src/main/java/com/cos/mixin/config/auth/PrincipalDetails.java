@@ -6,7 +6,8 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.cos.mixin.model.User2;
+import com.cos.mixin.domain.user.User;
+
 
 import lombok.Data;
 
@@ -14,9 +15,9 @@ import lombok.Data;
 @Data
 public class PrincipalDetails implements UserDetails{
 
-	private User2 user;
+	private User user;
 	
-	public PrincipalDetails(User2 user) {
+	public PrincipalDetails(User user) {
 		this.user = user;
 	}
 
@@ -31,12 +32,12 @@ public class PrincipalDetails implements UserDetails{
 
 	@Override
 	public String getPassword() {	
-		return user.getPassword();
+		return user.getUserPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		return user.getUsername();
+		return user.getUserEmail();
 	}
 
 	@Override

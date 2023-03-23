@@ -18,7 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.cos.mixin.config.auth.PrincipalDetails;
-import com.cos.mixin.model.User2;
+import com.cos.mixin.domain.user.User;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -40,15 +41,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 //			}
 
 			ObjectMapper om = new ObjectMapper();
-			User2 user = om.readValue(request.getInputStream(), User2.class);
+			User user = om.readValue(request.getInputStream(), User.class);
 			System.out.println(user);
 
 			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-					user.getUsername(), user.getPassword());
+					user.getUserEmail(), user.getUserPassword());
 
 			Authentication authentication = authenticationManager.authenticate(authenticationToken);
 			PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-			System.out.println("로그인 완료됨?" + principalDetails.getUser().getUsername());
+			System.out.println("로그인 완료됨?" + principalDetails.getUser().getUserEmail());
 
 			return authentication;
 
@@ -69,7 +70,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.withSubject(principalDetails.getUsername())
 				.withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
 				.withClaim("id", principalDetails.getUser().getId())
-				.withClaim("username", principalDetails.getUser().getUsername())
+				.withClaim("username", principalDetails.getUser().getUserEmail())
 				.sign(Algorithm.HMAC512(JwtProperties.SECRET));
 				
 		response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);

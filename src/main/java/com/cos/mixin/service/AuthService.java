@@ -22,7 +22,7 @@ public class AuthService {
 		String rawPassword = user.getUserPassword();
 		String encPassword = bCryptPasswordEncoder.encode(rawPassword);
 		user.setUserPassword(encPassword);
-		user.setRole("ROLE_USER");
+		user.setRoles("ROLE_USER");
 		User userEntity = userRepository.save(user);
 		return userEntity;
 	}

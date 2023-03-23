@@ -43,6 +43,31 @@ public class AuthController {
 	public String Signin() {
 		return "signin";
 	}
+	
+	@GetMapping("home")
+	public String home() {
+		return "<h1>home</h1>";
+	}
+	
+	@PostMapping("api/v1/user/token")
+	public String token() {
+		return "<h1>token</h1>";
+	}
+	// user, manager, admin 권한 접근 가능
+	@GetMapping("api/v1/user")
+	public String user() {
+		return "user";
+	}
+	// manager, admin 권한 접근 가능
+	@GetMapping("api/v1/manager")
+	public String manager() {
+		return "manager";
+	}
+	// admin 권한 접근 가능
+	@GetMapping("api/v1/admin")
+	public String admin() {
+		return "admin";
+	}
 
 	// 아이디 확인
 

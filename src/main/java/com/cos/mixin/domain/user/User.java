@@ -1,6 +1,9 @@
 package com.cos.mixin.domain.user;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +30,7 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	// 아이디
 	@Column(length = 20, unique = true)
@@ -58,10 +61,17 @@ public class User {
 
 	// 권한
 	@ColumnDefault("'ROLE_USER'")
-	private String role;
+	private String roles;
 
 	// 가입시간
 	private LocalDateTime createDate;
+	
+	public List<String> getRoleList(){
+		if(this.roles.length() > 0) {
+			return Arrays.asList(this.roles.split(","));
+		}
+		return new ArrayList<>();
+	}
 
 	@PrePersist
 	public void createDate() {
