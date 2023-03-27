@@ -1,21 +1,31 @@
 package com.cos.mixin.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientException;
 
 import com.cos.mixin.domain.user.User;
 import com.cos.mixin.dto.auth.SignupDto;
+import com.cos.mixin.dto.sms.MessageDTO;
+import com.cos.mixin.dto.sms.SmsResponseDTO;
 import com.cos.mixin.handler.ex.CustomValidationException;
 import com.cos.mixin.service.AuthService;
+import com.cos.mixin.service.SmsService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -88,5 +98,22 @@ public class AuthController {
 			User userEntity = authService.회원가입(user);
 			return "회원가입 완료";
 		}
+	}
+	
+	private final SmsService smsService;
+	
+	@GetMapping("/send")
+	public String getSmsPage() {
+		return "sendSms";
+	}
+	
+	@PostMapping("/sms/send")
+	public String sendSms(@RequestBody MessageDTO messageDto, Model model) throws JsonProcessingException, 
+				RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		
+		System.out.println("메세지 받음???????"+messageDto.getTo()+messageDto.getContent());
+		SmsResponseDTO response = smsService.sendSms(messageDto);
+		model.addAttribute("response", response);
+		return "result";
 	}
 }
