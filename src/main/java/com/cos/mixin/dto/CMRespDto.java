@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CMRespDto<T> {
-	private int code;
+	private int code; // 성공 1 ,실패 -1
 	private String message;
 	private T data;
 }

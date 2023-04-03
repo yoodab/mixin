@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 
+import com.cos.mixin.config.auth.PrincipalDetails;
 import com.cos.mixin.domain.user.User;
 import com.cos.mixin.dto.auth.SignupDto;
 import com.cos.mixin.dto.sms.MessageDTO;
@@ -35,37 +37,11 @@ public class AuthController {
 
 	private final AuthService authService;
 	
-	@PostMapping("/http/post")
-	public String postTest(User user) {
-		System.out.println("id:"+user.getUserName() );
-		System.out.println("id:"+user.getUserPhoneNumber() );
-		System.out.println(user);
-		return "post요청";
-	}
-	
-	@GetMapping("/http/get")
-	public String getTest() {
-		return "get요청";
-	}
-	
-	// 로그인
-	@GetMapping("/auth/signin")
-	public String Signin() {
-		return "signin";
-	}
-	
-	@GetMapping("home")
-	public String home() {
-		return "<h1>home</h1>";
-	}
-	
-	@PostMapping("api/v1/user/token")
-	public String token() {
-		return "<h1>token</h1>";
-	}
+
 	// user, manager, admin 권한 접근 가능
 	@GetMapping("api/v1/user")
-	public String user() {
+	public String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		System.out.println("principalDetails : "+principalDetails);
 		return "user";
 	}
 	// manager, admin 권한 접근 가능
@@ -79,7 +55,6 @@ public class AuthController {
 		return "admin";
 	}
 
-	// 아이디 확인
 
 	// 회원가입
 	@PostMapping("/auth/signup")

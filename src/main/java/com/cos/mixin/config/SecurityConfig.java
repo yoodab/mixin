@@ -1,5 +1,7 @@
 package com.cos.mixin.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,18 +24,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
+	private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
+
+	
 	private final CorsConfig corsConfig;
 	private final UserRepository userRepository;
 	
 	@Bean
 	public BCryptPasswordEncoder encode() {
+		log.debug("디버그: BCryptPasswordEncoder 빈 등록됨");
+		
 		return new BCryptPasswordEncoder();
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 //		http.addFilterBefore(new MyFilter3(),SecurityContextPersistenceFilter.class);
-		
+		http.headers().frameOptions().disable();
 		http.csrf().disable(); // csrf 토큰 사용안함
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션을 사용하지 않음
 		.and()
