@@ -1,35 +1,44 @@
 package com.cos.mixin.service;
 
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cos.mixin.domain.user.User;
 import com.cos.mixin.domain.user.UserRepository;
-import com.cos.mixin.handler.ex.CustomValidationException;
+import com.cos.mixin.dto.user.UserReqDto.JoinReqDto;
+import com.cos.mixin.dto.user.UserRespDto.JoinRespDto;
+import com.cos.mixin.handler.ex.CustomApiException;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
+	private final Logger log = LoggerFactory.getLogger(getClass());
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-	private final UserRepository userRepository;
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	public User 회원수정(Long id, User user) {
-		// 1. 영속화
-				// 1. 무조건 찾았다. 걱정마 get() 2. 못찾았어 익섹션 발동시킬께 orElseThrow()
-				User userEntity = userRepository.findById(id).orElseThrow(() -> { return new CustomValidationException("찾을 수 없는 id입니다.");});
+    // 서비스는 DTO를 요청받고, DTO로 응답한다.
+    @Transactional // 트랜잭션이 메서드 시작할 때, 시작되고, 종료될 때 함께 종료
+    public JoinRespDto 회원가입(JoinReqDto joinReqDto) {
+    	
+        // 1. 동일 유저네임 존재 검사
+        Optional<User> userOP = userRepository.findByUserEmail(joinReqDto.getUserEmail());
+        if (userOP.isPresent()) {
+            // 유저네임 중복되었다는 뜻
+            throw new CustomApiException("동일한 username이 존재합니다");
+        }
 
-				// 변경할 내용 변경하기
-				// 2. 영속화된 오브젝트를 수정 - 더티체킹 (업데이트 완료)
-				userEntity.setUserName(user.getUserName());
-				
-				String rawPassword = user.getUserPassword();
-				String encPassword = bCryptPasswordEncoder.encode(rawPassword);
-				
-				userEntity.setUserPassword(encPassword);
+        // 2. 패스워드 인코딩 + 회원가입
+        User userPS = userRepository.save(joinReqDto.toEntity(passwordEncoder));
 
-		return userEntity;
-	}
+        // 3. dto 응답
+        return new JoinRespDto(userPS);
+    }
 }

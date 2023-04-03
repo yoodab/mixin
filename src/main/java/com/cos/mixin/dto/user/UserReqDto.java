@@ -16,8 +16,8 @@ public class UserReqDto {
 	@Setter
     @Getter
     public static class LoginReqDto {
-        private String username;
-        private String password;
+        private String userEmail;
+        private String userPassword;
     }
 	
 	@Data

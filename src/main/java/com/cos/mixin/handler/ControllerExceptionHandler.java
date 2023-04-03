@@ -1,20 +1,39 @@
 package com.cos.mixin.handler;
 
-import java.util.Map;
 
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.cos.mixin.dto.CMRespDto;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.cos.mixin.dto.ResponseDto;
+import com.cos.mixin.handler.ex.CustomApiException;
+import com.cos.mixin.handler.ex.CustomForbiddenException;
 import com.cos.mixin.handler.ex.CustomValidationException;
 
-@RestController
-@ControllerAdvice
+@RestControllerAdvice
 public class ControllerExceptionHandler {
 
+	private final Logger log = LoggerFactory.getLogger(getClass());
+
+	@ExceptionHandler(CustomApiException.class)
+	public ResponseEntity<?> apiException(CustomApiException e) {
+		log.error(e.getMessage());
+		return new ResponseEntity<>(new ResponseDto<>(-1, e.getMessage(), null), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(CustomForbiddenException.class)
+	public ResponseEntity<?> fobiddenException(CustomForbiddenException e) {
+		log.error(e.getMessage());
+		return new ResponseEntity<>(new ResponseDto<>(-1, e.getMessage(), null), HttpStatus.FORBIDDEN);
+	}
+
 	@ExceptionHandler(CustomValidationException.class)
-	public CMRespDto<?> validationException(CustomValidationException e) {
-		return new CMRespDto<>(-1, e.getMessage(), e.getErrorMap() );
+	public ResponseEntity<?> validationApiException(CustomValidationException e) {
+		log.error(e.getMessage());
+		return new ResponseEntity<>(new ResponseDto<>(-1, e.getMessage(), e.getErrorMap()), HttpStatus.BAD_REQUEST);
 	}
 }

@@ -10,24 +10,24 @@ import com.cos.mixin.domain.user.User;
 
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 
-@Data
-public class PrincipalDetails implements UserDetails{
+@Getter
+@RequiredArgsConstructor
+public class LoginUser implements UserDetails{
 
 	private static final long serialVersionUID = 1L;
-	private User user;
 	
-	public PrincipalDetails(User user) {
-		this.user = user;
-	}
+	private final User user;
+	
+
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
-		user.getRoleList().forEach(r->{
-			authorities.add(()->r);
-		});
+        authorities.add(() -> "ROLE_" + user.getRoles());
 		return authorities;
 	}
 

@@ -1,5 +1,7 @@
 package com.cos.mixin.config.jwt;
 
+
+
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
@@ -7,67 +9,56 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.cos.mixin.config.auth.PrincipalDetails;
-import com.cos.mixin.domain.user.User;
-import com.cos.mixin.domain.user.UserRepository;
+import com.cos.mixin.config.auth.LoginUser;
 
 
-public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
+/*
+ * 모든 주소에서 동작함 (토큰 검증)
+ */
+public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-	private UserRepository userRepository;
-	
-	
-	public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
-		super(authenticationManager);
-		this.userRepository = userRepository;
-	}
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
+        super(authenticationManager);
+    }
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+    // JWT 토큰 헤더를 추가하지 않아도 해당 필터는 통과는 할 수 있지만, 결국 시큐리티단에서 세션 값 검증에 실패함.
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
-		
-		String jwtHeader = request.getHeader(JwtProperties.HEADER_STRING);
-		System.out.println("jwtHeader : " + jwtHeader);
-		
-		if(jwtHeader == null || !jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
-			chain.doFilter(request, response);
-			return;
-			
-		}
-		
-		
-		System.out.println("인증이나 권한이 필요한 주소 요청이 됨");
-		
-		
-		String jwtToken = request.getHeader(JwtProperties.HEADER_STRING)
-				.replace(JwtProperties.TOKEN_PREFIX, "");
-		
-		
-		String username = 
-				JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(jwtToken)
-				.getClaim("username").asString();
-		
-		if(username !=null) {
-			User userEntity = userRepository.findByUserEmail(username);
-			
-			PrincipalDetails principalDetails = new PrincipalDetails(userEntity);
-			
-			Authentication authentication =
-					new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
-			
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-		}
+        if (isHeaderVerify(request, response)) {
+            // 토큰이 존재함
+            log.debug("디버그 : 토큰이 존재함");
 
-		chain.doFilter(request, response);
-		
-	}
+            String token = request.getHeader(JwtVO.HEADER).replace(JwtVO.TOKEN_PREFIX, "");
+            LoginUser loginUser = JwtProcess.verify(token);
+            log.debug("디버그 : 토큰이 검증이 완료됨");
+
+            // 임시 세션 (UserDetails 타입 or username)
+            Authentication authentication = new UsernamePasswordAuthenticationToken(loginUser, null,
+                    loginUser.getAuthorities()); // id, role 만 존재
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.debug("디버그 : 임시 세션이 생성됨");
+        }
+        chain.doFilter(request, response);
+    }
+
+    private boolean isHeaderVerify(HttpServletRequest request, HttpServletResponse response) {
+        String header = request.getHeader(JwtVO.HEADER);
+        if (header == null || !header.startsWith(JwtVO.TOKEN_PREFIX)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
+
