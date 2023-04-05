@@ -12,7 +12,6 @@ import lombok.Setter;
 @Getter
 @Builder
 public class MessageDTO {
-
 	String to;
-	String content;
+	String context;
 }

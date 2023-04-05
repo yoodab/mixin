@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -46,7 +47,6 @@ public class SmsService {
 	@Value("${naver-cloud-sms.senderPhone}")
 	private String phone;
 
-
 	
 	public String makeSignature(Long time)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
@@ -80,12 +80,12 @@ public class SmsService {
 		headers.set("x-ncp-apigw-timestamp", time.toString());
 		headers.set("x-ncp-iam-access-key", accessKey);
 		headers.set("x-ncp-apigw-signature-v2", makeSignature(time));
-
+	    
 		List<MessageDTO> messages = new ArrayList();
 		messages.add(messageDto);
 
 		SmsRequestDTO request = SmsRequestDTO.builder().type("SMS").contentType("COMM").countryCode("82").from(phone)
-				.content(messageDto.getContent()).messages(messages).build();
+				.content(messageDto.getContext()).messages(messages).build();
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		String body = objectMapper.writeValueAsString(request);
@@ -96,6 +96,7 @@ public class SmsService {
 		SmsResponseDTO response = restTemplate.postForObject(
 				new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages"), httpBody,
 				SmsResponseDTO.class);
+
 
 		return response;
 	}

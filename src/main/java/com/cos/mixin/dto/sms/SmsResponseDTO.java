@@ -15,9 +15,9 @@ import lombok.Setter;
 @Getter
 @Builder
 public class SmsResponseDTO {
-
 	String requestId;
 	LocalDateTime requestTime;
 	String statusCode;
 	String statusName;
+	String content;
 }
