@@ -1,9 +1,6 @@
 package com.cos.mixin.domain.user;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,18 +10,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -70,8 +62,8 @@ public class User {
 
 	// 권한
 	@Enumerated(EnumType.STRING)
-	@ColumnDefault("'ROLE_USER'")
-	private UserEnum roles;
+	@Column(nullable = false)
+	private UserEnum role;
 
 	@CreatedDate // Insert
     @Column(nullable = false)
@@ -83,7 +75,7 @@ public class User {
 
     @Builder
 	public User(Long id, String userEmail, String userPassword, String userName, String userSex, String userPhoneNumber,
-			String userUniversity, String userStudnetId, String userDepartment, UserEnum roles, LocalDateTime createdAt,
+			String userUniversity, String userStudnetId, String userDepartment, UserEnum role, LocalDateTime createdAt,
 			LocalDateTime updatedAt) {
 		this.id = id;
 		this.userEmail = userEmail;
@@ -94,7 +86,7 @@ public class User {
 		this.userUniversity = userUniversity;
 		this.userStudnetId = userStudnetId;
 		this.userDepartment = userDepartment;
-		this.roles = roles;
+		this.role = role;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}

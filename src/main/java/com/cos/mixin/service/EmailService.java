@@ -5,7 +5,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.cos.mixin.dto.mail.MailDto;
+import com.cos.mixin.dto.verification.VerificationReqDto.MailReqDto;
+
 
 
 @Service
@@ -14,11 +15,12 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendMail(MailDto mail) {
+    public String sendMail(MailReqDto mailReqDto) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(mail.getAddress());
-        message.setSubject(mail.getTitle());
-        message.setText(mail.getContent());
+        message.setTo(mailReqDto.getUserEmail());
+        message.setSubject(mailReqDto.getTitle());
+        message.setText(mailReqDto.getContent());
         mailSender.send(message);
+        return "메일 전송 완료";
     }
 }

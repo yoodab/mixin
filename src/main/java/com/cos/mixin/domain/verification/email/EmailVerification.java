@@ -1,11 +1,10 @@
-package com.cos.mixin.domain.MailVarification;
+package com.cos.mixin.domain.verification.email;
 
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.cos.mixin.domain.smsVerification.SmsVerification;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +16,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class MailVerification {
+public class EmailVerification {
 	@Id
     private String userEmail;
     private String code;
@@ -26,7 +25,7 @@ public class MailVerification {
     
     
     @Builder
-	public MailVerification(String userEmail, String code, LocalDateTime requestTime, int requestCount) {
+	public EmailVerification(String userEmail, String code, LocalDateTime requestTime, int requestCount) {
 		this.userEmail = userEmail;
 		this.code = code;
 		this.requestTime = requestTime;

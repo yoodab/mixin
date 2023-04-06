@@ -1,4 +1,4 @@
-package com.cos.mixin.domain.smsVerification;
+package com.cos.mixin.domain.verification.sms;
 
 import java.time.LocalDateTime;
 

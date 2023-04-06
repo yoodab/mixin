@@ -22,9 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import com.cos.mixin.dto.sms.MessageDTO;
-import com.cos.mixin.dto.sms.SmsRequestDTO;
-import com.cos.mixin.dto.sms.SmsResponseDTO;
+import com.cos.mixin.dto.verification.VerificationReqDto.SmsDto;
+import com.cos.mixin.dto.verification.VerificationReqDto.SmsReqDto;
+import com.cos.mixin.dto.verification.VerificationRespDto.MessageRespDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -71,7 +71,7 @@ public class SmsService {
 		return encodeBase64String;
 	}
 
-	public SmsResponseDTO sendSms(MessageDTO messageDto) throws JsonProcessingException, RestClientException,
+	public MessageRespDto sendSms(SmsDto smsDto) throws JsonProcessingException, RestClientException,
 			URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		Long time = System.currentTimeMillis();
 
@@ -81,11 +81,11 @@ public class SmsService {
 		headers.set("x-ncp-iam-access-key", accessKey);
 		headers.set("x-ncp-apigw-signature-v2", makeSignature(time));
 	    
-		List<MessageDTO> messages = new ArrayList();
-		messages.add(messageDto);
+		List<SmsDto> messages = new ArrayList<SmsDto>();
+		messages.add(smsDto);
 
-		SmsRequestDTO request = SmsRequestDTO.builder().type("SMS").contentType("COMM").countryCode("82").from(phone)
-				.content(messageDto.getContext()).messages(messages).build();
+		SmsReqDto request = SmsReqDto.builder().type("SMS").contentType("COMM").countryCode("82").from(phone)
+				.content(smsDto.getContent()).messages(messages).build();
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		String body = objectMapper.writeValueAsString(request);
@@ -93,11 +93,9 @@ public class SmsService {
 
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-		SmsResponseDTO response = restTemplate.postForObject(
+		MessageRespDto response = restTemplate.postForObject(
 				new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages"), httpBody,
-				SmsResponseDTO.class);
-
-
+				MessageRespDto.class);
 		return response;
 	}
 }

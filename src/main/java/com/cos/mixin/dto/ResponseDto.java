@@ -1,6 +1,5 @@
 package com.cos.mixin.dto;
 
-import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
