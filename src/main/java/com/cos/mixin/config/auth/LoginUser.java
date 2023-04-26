@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.cos.mixin.domain.user.User;
 
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -20,13 +21,12 @@ public class LoginUser implements UserDetails{
 	private static final long serialVersionUID = 1L;
 	
 	private final User user;
-	
 
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(() -> "ROLE_" + user.getRole());
+        authorities.add(() -> "ROLE_" + user.getRoles());
 		return authorities;
 	}
 

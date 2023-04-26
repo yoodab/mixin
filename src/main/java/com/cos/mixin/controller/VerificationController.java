@@ -57,6 +57,8 @@ public class VerificationController {
 	    @PostMapping("/email/send")
 		public ResponseEntity<?> sendEmail(@RequestBody EmailDto emailDto) throws JsonProcessingException, 
 					RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	    	System.out.println("==========================");
+	    	System.out.println(emailDto.getUserEmail());
 	    	EmailRespDto emailRespDto=emailVerificationService.sendVerificationCode(emailDto);
 			return new ResponseEntity<>(new ResponseDto<>(1, "email 인증번호 전송 성공",emailRespDto), HttpStatus.CREATED);
 		}

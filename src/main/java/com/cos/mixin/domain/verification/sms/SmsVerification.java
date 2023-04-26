@@ -3,6 +3,8 @@ package com.cos.mixin.domain.verification.sms;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.Builder;
@@ -16,7 +18,9 @@ import lombok.Setter;
 @Getter
 @Entity
 public class SmsVerification {
-    @Id
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
     private String phoneNumber;
     private String code;
     private LocalDateTime requestTime;

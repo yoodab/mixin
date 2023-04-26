@@ -54,7 +54,8 @@ public class EmailVerificationService {
 				VerificationCode.setRequestCount(0);
 			}
 		}
-
+		System.out.println("================");
+		System.out.println(emailDto.getUserEmail());
 		// 위의 경우가 아니면 DB에 저장
 		VerificationCode.setRequestCount(VerificationCode.getRequestCount() + 1);
 		VerificationCode.setUserEmail(emailDto.getUserEmail());
@@ -63,7 +64,7 @@ public class EmailVerificationService {
 
 		emailVerificationCodeRepository.save(VerificationCode);
 
-		String emailContent = VerificationVO.EMAIL_PREFIX + code + VerificationVO.EMAIL_PREFIX;
+		String emailContent = VerificationVO.EMAIL_PREFIX + code + VerificationVO.EMAIL_POSTFIX;
 
 		MailReqDto mailReqDto = new MailReqDto();
 		mailReqDto.setContent(emailContent);

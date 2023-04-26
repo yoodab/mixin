@@ -6,7 +6,6 @@ import javax.validation.constraints.Size;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.cos.mixin.domain.user.User;
-import com.cos.mixin.domain.user.UserEnum;
 
 import lombok.Data;
 import lombok.Getter;
@@ -37,7 +36,6 @@ public class UserReqDto {
     						.userEmail(userEmail)
     						.userPassword(bCryptPasswordEncoder.encode(userPassword))
     						.userName(userName)
-    						.role(UserEnum.CUSTOMER)
     						.build();
     			}
     }
