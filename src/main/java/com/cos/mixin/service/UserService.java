@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cos.mixin.domain.user.User;
+import com.cos.mixin.domain.user.UserEnum;
 import com.cos.mixin.domain.user.UserRepository;
 import com.cos.mixin.dto.user.UserReqDto.JoinReqDto;
 import com.cos.mixin.dto.user.UserRespDto.JoinRespDto;
@@ -35,10 +36,19 @@ public class UserService {
             throw new CustomApiException("동일한 username이 존재합니다");
         }
 
-        // 2. 패스워드 인코딩 + 회원가입
-        User userPS = userRepository.save(joinReqDto.toEntity(passwordEncoder));
+        // 2. 회원가입 Role설정
+        User userEntity = joinReqDto.toEntity(passwordEncoder);
+        userEntity.setRoles(UserEnum.CUSTOMER);
+        
+        // 3. 패스워드 인코딩 + 회원가입
+        User userPS = userRepository.save(userEntity);
 
-        // 3. dto 응답
+        // 4. dto 응답
         return new JoinRespDto(userPS);
+    }
+    
+    public User 프로필확인(long id) {
+    	User userEntity = userRepository.findById(id).get();
+    	return userEntity;
     }
 }
