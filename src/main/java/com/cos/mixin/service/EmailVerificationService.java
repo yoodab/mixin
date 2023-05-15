@@ -45,9 +45,9 @@ public class EmailVerificationService {
 
 		EmailVerification VerificationCode = emailVerificationCodeRepository.findByUserEmail(emailDto.getUserEmail())	.orElse(new EmailVerification());
 		// 인증 횟수 확인 5번까지 가능
-		if (VerificationCode.getRequestCount() >= 2) {
+		if (VerificationCode.getRequestCount() >= 5) {
 			// 인증실패 5회 하고 다음 시도는 1일 지나고 가능
-			if (VerificationCode.getRequestTime() != null	&& VerificationCode.getRequestTime().plusMinutes(1).isAfter(now)) {
+			if (VerificationCode.getRequestTime() != null	&& VerificationCode.getRequestTime().plusMinutes(3).isAfter(now)) {
 				throw new CustomApiException("인증 횟수 초과");
 			} else {
 				emailVerificationCodeRepository.delete(VerificationCode);

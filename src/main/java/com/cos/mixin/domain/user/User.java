@@ -45,7 +45,7 @@ public class User {
 	@Column(length = 40, unique = true, nullable = false)
 	private String userEmail;
 
-	private Boolean agradInfrm;
+	private String agradInfrm;
 
 	// 비번
 	@Column(nullable = false)
@@ -89,7 +89,7 @@ public class User {
 	
 	
 	@Builder
-    public User(Long id, String userEmail, Boolean agradInfrm, String userPassword, String userName, String userGender,
+    public User(Long id, String userEmail, String agradInfrm, String userPassword, String userName, String userGender,
 			String userPhoneNumber, String userCarrier, String userUniversity, String userStudnetId,
 			String userDepartment, UserEnum roles, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		this.id = id;

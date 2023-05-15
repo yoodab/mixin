@@ -34,7 +34,7 @@ public class UserReqDto {
     			@NotBlank
     			private String userName;
     			
-    			private Boolean agradInfrm;
+    			private String agradInfrm;
     			// 성별
     			private String userGender;
     			// 번호
