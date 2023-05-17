@@ -1,6 +1,5 @@
 package com.cos.mixin.domain.school;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,18 +10,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @NoArgsConstructor
 @Setter
 @Getter
 @Entity
-public class School {
+public class Department {
 	
-	@Id
-	private Long id;
-	
-	@Column(nullable = false)
-	private String schoolName;
-	
-	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+    
 }
