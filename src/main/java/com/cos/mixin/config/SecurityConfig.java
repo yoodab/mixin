@@ -36,7 +36,7 @@ public class SecurityConfig {
 		log.debug("디버그 : BCryptPasswordEncoder 빈 등록됨");
 		return new BCryptPasswordEncoder();
 	}
-
+//
 	// JWT 필터 등록이 필요함
 	public class CustomSecurityFilterManager extends AbstractHttpConfigurer<CustomSecurityFilterManager, HttpSecurity> {
 		@Override
