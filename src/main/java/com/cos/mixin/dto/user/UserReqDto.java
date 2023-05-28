@@ -14,12 +14,17 @@ import lombok.Setter;
 
 public class UserReqDto {
 	
-	@Setter
-    @Getter
-    public static class LoginReqDto {
+	@Data
+	public static class LoginReqDto {
         private String userEmail;
         private String userPassword;
     }
+	
+	@Data
+    public static class SetCategoryReqDto {
+        private String categorys;
+    }
+	
 	
 	@Data
     public static class JoinReqDto {

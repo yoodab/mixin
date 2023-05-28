@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -13,6 +14,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
@@ -21,6 +23,9 @@ import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.cos.mixin.domain.category.Category;
+import com.cos.mixin.domain.userCategory.UserCategory;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -71,6 +76,10 @@ public class User {
 
 	// 학과
 	private String userDepartment;
+	
+	// 카테고리
+	@OneToMany(mappedBy = "user")
+	private List<UserCategory> userCategorys;
 
 	// 권한
 	@Enumerated(EnumType.STRING)

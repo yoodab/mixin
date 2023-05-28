@@ -17,6 +17,7 @@ import com.cos.mixin.config.auth.LoginUser;
 import com.cos.mixin.domain.user.User;
 import com.cos.mixin.dto.ResponseDto;
 import com.cos.mixin.dto.user.UserReqDto.JoinReqDto;
+import com.cos.mixin.dto.user.UserReqDto.SetCategoryReqDto;
 import com.cos.mixin.dto.user.UserRespDto.JoinRespDto;
 import com.cos.mixin.service.UserService;
 
@@ -27,12 +28,19 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class UserController {
 	private final UserService userService;
+	
 
 	
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody @Valid JoinReqDto joinReqDto, BindingResult bindingResult) {
         JoinRespDto joinRespDto = userService.회원가입(joinReqDto);
         return new ResponseEntity<>(new ResponseDto<>(1, "회원가입 성공", joinRespDto), HttpStatus.CREATED);
+    }
+    
+    @PostMapping("/category")
+    public ResponseEntity<?> category(@AuthenticationPrincipal LoginUser loginUser, @RequestBody SetCategoryReqDto setCategoryReqDto) {
+    	userService.유저카테고리등록(loginUser.getUser().getId(), setCategoryReqDto.getCategorys());
+        return new ResponseEntity<>(new ResponseDto<>(1, "카테고리 설정 성공", null), HttpStatus.CREATED);
     }
     
     
@@ -42,6 +50,8 @@ public class UserController {
     	User userEntity = userService.프로필확인(loginUser.getUser().getId());
     	return new ResponseEntity<>(new ResponseDto<>(1, "프로필정보", userEntity), HttpStatus.OK);
     }
+    
+    
     
    
 }
