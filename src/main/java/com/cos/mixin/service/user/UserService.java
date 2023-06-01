@@ -1,4 +1,4 @@
-package com.cos.mixin.service;
+package com.cos.mixin.service.user;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,40 +55,55 @@ public class UserService {
     }
     
     @Transactional
-    public void 유저카테고리등록(long id, String categorys) {
-    	
-    	// 입력받은 데이터 array 만들기
-    	String[] categoryNames = categorys.split(",");
-    	
-    	// DB에 저장되어 있는 카테고리 리스트 받기
-    	List<UserCategory> categoryList = userCategoryRepository.findByUserId(id);
-    	
-    	 // Remove categories that are not present in the input
+    public void 유저카테고리등록(long id, List<String> categorys) {
+        // 입력받은 데이터 List를 String 배열로 변환
+        String[] categoryNames = categorys.toArray(new String[0]);
+
+        // DB에 저장되어 있는 카테고리 리스트 받기
+        List<UserCategory> categoryList = userCategoryRepository.findByUserId(id);
+
+        // Remove categories that are not present in the input
         for (UserCategory existingCategory : categoryList) {
             if (!Arrays.asList(categoryNames).contains(existingCategory.getCategory().getCategory())) {
-            	userCategoryRepository.mDelUserCategory(id, existingCategory.getCategory().getCategory());
+                userCategoryRepository.mDelUserCategory(id, existingCategory.getCategory().getCategory());
             }
         }
-    	
-    	// 원래 있던 리스트에서 입력 안된부분 제거
-    	categoryList.removeIf(category -> !Arrays.asList(categoryNames).contains(category.getCategory().getCategory()));
-    	
-    	
-    	for (String categoryName : categoryNames) {
+
+        // 원래 있던 리스트에서 입력 안된 부분 제거
+        categoryList.removeIf(category -> !Arrays.asList(categoryNames).contains(category.getCategory().getCategory()));
+
+        for (String categoryName : categoryNames) {
             if (categoryList.stream().noneMatch(category -> category.getCategory().getCategory().equals(categoryName))) {
                 userCategoryRepository.mSetUserCategory(id, categoryName);
             }
         }
-    	
-    	
-    	
-    	
-    	
+//    	// 입력받은 데이터 array 만들기
+//    	String[] categoryNames = categorys.split(",");
+//    	
+//    	// DB에 저장되어 있는 카테고리 리스트 받기
+//    	List<UserCategory> categoryList = userCategoryRepository.findByUserId(id);
+//    	
+//    	 // Remove categories that are not present in the input
+//        for (UserCategory existingCategory : categoryList) {
+//            if (!Arrays.asList(categoryNames).contains(existingCategory.getCategory().getCategory())) {
+//            	userCategoryRepository.mDelUserCategory(id, existingCategory.getCategory().getCategory());
+//            }
+//        }
+//    	
+//    	// 원래 있던 리스트에서 입력 안된부분 제거
+//    	categoryList.removeIf(category -> !Arrays.asList(categoryNames).contains(category.getCategory().getCategory()));
+//    	
+//    	
+//    	for (String categoryName : categoryNames) {
+//            if (categoryList.stream().noneMatch(category -> category.getCategory().getCategory().equals(categoryName))) {
+//                userCategoryRepository.mSetUserCategory(id, categoryName);
+//            }
+//        }
     }
     
     
     
-    public User 프로필확인(long id) {
+    public User 유저정보보기(long id) {
     	User userEntity = userRepository.findById(id).get();
     	return userEntity;
     }

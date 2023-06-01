@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cos.mixin.config.auth.LoginUser;
 import com.cos.mixin.domain.momim.Momim;
 import com.cos.mixin.dto.ResponseDto;
 import com.cos.mixin.dto.Momim.MomimReqDto.CreateMomimReqDto;
-import com.cos.mixin.service.MomimService;
+import com.cos.mixin.dto.Momim.MomimReqDto.JoinMomimReqDto;
+import com.cos.mixin.service.momim.MomimService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,29 +35,31 @@ public class MomimController {
 	private final MomimService momimService;
 	
 	@PostMapping("/momim/join") // 모임가입 
-    public ResponseEntity<?> momimJoin(@AuthenticationPrincipal LoginUser loginUser) {
+    public ResponseEntity<?> momimJoin(@RequestBody JoinMomimReqDto joinMomimReqDto,@AuthenticationPrincipal LoginUser loginUser) {
 		// 모임가입을 해야한다
-		
-		
+		momimService.모임가입(joinMomimReqDto, loginUser);
 		return new ResponseEntity<>(new ResponseDto<>(1, "모임정보", null), HttpStatus.OK);
     }
 	
 	@GetMapping("/momim")
     public ResponseEntity<?> momimSerch(@AuthenticationPrincipal LoginUser loginUser) {
-		List<Momim> momimList = momimService.모임정보();
-		return new ResponseEntity<>(new ResponseDto<>(1, "모임정보", momimList), HttpStatus.OK);
+		List<Momim> momimList = momimService.내모임정보(loginUser);
+		return new ResponseEntity<>(new ResponseDto<>(1, "모임정보", null), HttpStatus.OK);
     }
 	
 	@PostMapping("/momim/create")
-    public ResponseEntity<?> momimCreate(@AuthenticationPrincipal LoginUser loginUser, @RequestBody @Valid CreateMomimReqDto createMomimReqDto, BindingResult bindingResult) {
-        momimService.모임생성(createMomimReqDto,loginUser.getUser().getId());
+    public ResponseEntity<?> momimCreate(@AuthenticationPrincipal LoginUser loginUser,@RequestPart(value = "file") MultipartFile file, @RequestPart(value = "CreateMomimReqDto") @Valid CreateMomimReqDto createMomimReqDto, BindingResult bindingResult) {
+        System.out.println(file);
+		createMomimReqDto.setMomimThumbnailFile(file);
+		momimService.모임생성(createMomimReqDto,loginUser);
         return new ResponseEntity<>(new ResponseDto<>(1, "모임 생성 성공", null), HttpStatus.CREATED);
     }
 	
-	@DeleteMapping("/momim/delete")
-	public ResponseEntity<?> momimDelete(@PathVariable int imageId, @AuthenticationPrincipal LoginUser loginUser){
-		
-		return new ResponseEntity<>(new ResponseDto<>(1, "좋아요취소성공",null),HttpStatus.OK);
+	// Delete 는 body에 데이터 못넣고 주소에 넣어야 함
+	@DeleteMapping("/momim/delete/{momimId}")
+	public ResponseEntity<?> momimDelete(@PathVariable Long momimId, @AuthenticationPrincipal LoginUser loginUser){
+		momimService.모임삭제(momimId,loginUser);
+		return new ResponseEntity<>(new ResponseDto<>(1, "모임 삭제 성공",null),HttpStatus.OK);
 	}
 	
 }

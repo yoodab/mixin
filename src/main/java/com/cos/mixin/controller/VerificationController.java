@@ -20,8 +20,8 @@ import com.cos.mixin.dto.verification.VerificationReqDto.SmsCheckDto;
 import com.cos.mixin.dto.verification.VerificationReqDto.SmsDto;
 import com.cos.mixin.dto.verification.VerificationRespDto.EmailRespDto;
 import com.cos.mixin.dto.verification.VerificationRespDto.MessageRespDto;
-import com.cos.mixin.service.EmailVerificationService;
-import com.cos.mixin.service.SmsVerificationService;
+import com.cos.mixin.service.verification.EmailVerificationService;
+import com.cos.mixin.service.verification.SmsVerificationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;

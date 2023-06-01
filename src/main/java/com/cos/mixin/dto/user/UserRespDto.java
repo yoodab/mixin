@@ -14,11 +14,13 @@ public class UserRespDto {
         private Long id;
         private String username;
         private String createdAt;
+        private boolean isFirstLogin;
 
         public LoginRespDto(User user) {
             this.id = user.getId();
             this.username = user.getUserName();
             this.createdAt = CustomDateUtil.toStringFormat(user.getCreatedAt());
+            this.isFirstLogin = user.getUserCategorys().isEmpty();
         }
     }
 

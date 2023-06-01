@@ -11,10 +11,12 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
@@ -78,9 +80,14 @@ public class User {
 	private String userDepartment;
 	
 	// 카테고리
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<UserCategory> userCategorys;
+	
+	
 
+	@OneToOne(mappedBy = "user")
+	private UserProfile userProfile;
+	
 	// 권한
 	@Enumerated(EnumType.STRING)
 	@ColumnDefault("'ROLE_USER'")

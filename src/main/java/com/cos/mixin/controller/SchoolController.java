@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cos.mixin.domain.school.Department;
 import com.cos.mixin.domain.school.School;
 import com.cos.mixin.dto.ResponseDto;
 import com.cos.mixin.dto.school.SchoolDepartmentDto;
-import com.cos.mixin.service.SchoolService;
+import com.cos.mixin.service.school.DepartmentService;
+import com.cos.mixin.service.school.SchoolService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class SchoolController {
 	
 	private final SchoolService schoolService;
-	
+	private final DepartmentService departmentService;
 	@GetMapping("/school")
 	public ResponseEntity<?> schoolName() {
 		List<School> schoolName = schoolService.학교명();
@@ -35,8 +35,10 @@ public class SchoolController {
 	
 	@GetMapping("/{schoolName}/Department")
 	public ResponseEntity<?> schoolDepartment(@PathVariable String schoolName) {
-		List<Department> department = schoolService.학과명(schoolName);
-		return new ResponseEntity<>(new ResponseDto<>(1, "학과명 확인 성공", department), HttpStatus.OK);
+		School school = schoolService.학과명(schoolName);
+		
+		
+		return new ResponseEntity<>(new ResponseDto<>(1, "학과명 확인 성공", school), HttpStatus.OK);
 	}
 
 	@GetMapping("/school/update")
@@ -45,9 +47,10 @@ public class SchoolController {
 		return new ResponseEntity<>(new ResponseDto<>(1, "학교데이터 만들기", null), HttpStatus.OK);
 	}
 	
-	@PostMapping("/school/department")
-	public ResponseEntity<?> DepartmentDataSet(@RequestBody SchoolDepartmentDto schoolDepartmentDto){
-	    schoolService.DepartmentData(schoolDepartmentDto.getSchoolName(), schoolDepartmentDto.getDepartmentName());
+	@GetMapping("/school/department")
+	public ResponseEntity<?> DepartmentDataSet(){
+		departmentService.populateDataFromJson();
+	    //schoolService.DepartmentData(schoolDepartmentDto.getSchoolName(), schoolDepartmentDto.getDepartmentName());
 		return new ResponseEntity<>(new ResponseDto<>(1, "학과 만들기", null), HttpStatus.OK);
 	}
 	

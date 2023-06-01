@@ -32,6 +32,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor // 스프링이 User 객체생성할 때 빈생성자로 new를 하기 때문!!
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table( // 제약조건 복합적으로 만들때
 		uniqueConstraints={
 			@UniqueConstraint(
@@ -53,6 +54,9 @@ public class Joining {
 	@ManyToOne
 	private User userId;
 	
+	private String status;
+	
+	private String reason;
 	
 	@CreatedDate // Insert
 	@Column(nullable = false)

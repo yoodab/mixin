@@ -1,5 +1,7 @@
 package com.cos.mixin.dto.user;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -22,7 +24,7 @@ public class UserReqDto {
 	
 	@Data
     public static class SetCategoryReqDto {
-        private String categorys;
+		private List<String> categorys;
     }
 	
 	

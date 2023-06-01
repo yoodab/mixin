@@ -19,7 +19,8 @@ import com.cos.mixin.dto.ResponseDto;
 import com.cos.mixin.dto.user.UserReqDto.JoinReqDto;
 import com.cos.mixin.dto.user.UserReqDto.SetCategoryReqDto;
 import com.cos.mixin.dto.user.UserRespDto.JoinRespDto;
-import com.cos.mixin.service.UserService;
+import com.cos.mixin.service.user.UserProfileService;
+import com.cos.mixin.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +29,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class UserController {
 	private final UserService userService;
-	
 
 	
     @PostMapping("/join")
@@ -44,14 +44,14 @@ public class UserController {
     }
     
     
-    @GetMapping("/user/profile")
+    @GetMapping("/user")
     public ResponseEntity<?> profile(@AuthenticationPrincipal LoginUser loginUser) {
     	System.out.println(loginUser.getUser().getId());
-    	User userEntity = userService.프로필확인(loginUser.getUser().getId());
+    	User userEntity = userService.유저정보보기(loginUser.getUser().getId());
     	return new ResponseEntity<>(new ResponseDto<>(1, "프로필정보", userEntity), HttpStatus.OK);
     }
     
-    
+
     
    
 }

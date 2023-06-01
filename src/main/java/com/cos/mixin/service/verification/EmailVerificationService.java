@@ -1,4 +1,4 @@
-package com.cos.mixin.service;
+package com.cos.mixin.service.verification;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;

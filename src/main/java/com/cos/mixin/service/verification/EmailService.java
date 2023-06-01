@@ -1,4 +1,4 @@
-package com.cos.mixin.service;
+package com.cos.mixin.service.verification;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

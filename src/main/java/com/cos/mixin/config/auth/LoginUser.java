@@ -12,16 +12,17 @@ import com.cos.mixin.domain.user.User;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 
 @Getter
+@Setter
 @RequiredArgsConstructor
 public class LoginUser implements UserDetails{
 
 	private static final long serialVersionUID = 1L;
 	
 	private final User user;
-
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

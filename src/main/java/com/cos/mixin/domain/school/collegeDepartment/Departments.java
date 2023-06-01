@@ -1,10 +1,11 @@
-package com.cos.mixin.domain.school;
+package com.cos.mixin.domain.school.collegeDepartment;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,13 +15,14 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class Department {
-	
-    @Id
+public class Departments {
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private String name;
-    
+	
+	private String DepartmentName;
+	
+	@ManyToOne
+    @JoinColumn(name = "collegeId")
+	private College college;
 }

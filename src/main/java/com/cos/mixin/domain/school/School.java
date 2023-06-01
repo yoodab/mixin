@@ -1,11 +1,16 @@
 package com.cos.mixin.domain.school;
 
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.cos.mixin.domain.school.collegeDepartment.College;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,5 +29,11 @@ public class School {
 	@Column(nullable = false)
 	private String schoolName;
 	
+	@Column(nullable = false)
+	private String address;
 	
+	@JsonIgnoreProperties({"school"})
+	@OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
+    private List<College> colleges;
+
 }

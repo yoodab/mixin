@@ -1,0 +1,58 @@
+[
+  {
+    "id": "1",
+    "categoryName": "IT/개발"
+  },
+  {
+    "id": "2",
+    "categoryName": "디자인"
+  },
+  {
+    "id": "3",
+    "categoryName": "문화활동"
+  },
+  {
+    "id": "4",
+    "categoryName": "음악"
+  },
+  {
+    "id": "5",
+    "categoryName": "여행"
+  },
+  {
+    "id": "6",
+    "categoryName": "봉사활동"
+  },
+  {
+    "id": "7",
+    "categoryName": "운동"
+  },
+  {
+    "id": "8",
+    "categoryName": "반려동물"
+  },
+  {
+    "id": "9",
+    "categoryName": "사고"
+  },
+  {
+    "id": "10",
+    "categoryName": "수업"
+  },
+  {
+    "id": "11",
+    "categoryName": "외국어"
+  },
+  {
+    "id": "12",
+    "categoryName": "맛집"
+  },
+  {
+    "id": "13",
+    "categoryName": "요리"
+  },
+  {
+    "id": "14",
+    "categoryName": "금융"
+  }
+]
