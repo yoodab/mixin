@@ -21,7 +21,7 @@ public class MomimReqDto {
 		
 	}
 	
-	
+
 
 	@Data
 	public static class CreateMomimReqDto{

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cos.mixin.domain.school.School;
 import com.cos.mixin.dto.ResponseDto;
 import com.cos.mixin.dto.school.SchoolDepartmentDto;
+import com.cos.mixin.dto.school.SchoolDto;
 import com.cos.mixin.service.school.DepartmentService;
 import com.cos.mixin.service.school.SchoolService;
+import com.cos.mixin.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,12 +28,14 @@ public class SchoolController {
 	
 	private final SchoolService schoolService;
 	private final DepartmentService departmentService;
+	private final UserService userService;
+	
 	@GetMapping("/school")
 	public ResponseEntity<?> schoolName() {
-		List<School> schoolName = schoolService.학교명();
+		List<SchoolDto> schoolName = schoolService.학교명();
 		return new ResponseEntity<>(new ResponseDto<>(1, "학교명 확인 성공", schoolName), HttpStatus.OK);
 	}
-	
+	 
 	
 	@GetMapping("/{schoolName}/Department")
 	public ResponseEntity<?> schoolDepartment(@PathVariable String schoolName) {
@@ -54,6 +58,12 @@ public class SchoolController {
 		return new ResponseEntity<>(new ResponseDto<>(1, "학과 만들기", null), HttpStatus.OK);
 	}
 	
+	
+	@PostMapping("/category")
+    public ResponseEntity<?> category() {
+    	userService.카테고리등록();
+        return new ResponseEntity<>(new ResponseDto<>(1, "카테고리 설정 성공", null), HttpStatus.CREATED);
+    }
 }
 
 

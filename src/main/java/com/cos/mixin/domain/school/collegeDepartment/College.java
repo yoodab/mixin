@@ -31,6 +31,7 @@ public class College {
     
     @ManyToOne
     @JoinColumn(name = "schoolId")
+    @JsonIgnoreProperties("colleges")
     private School school;
     
     @JsonIgnoreProperties({"college"})

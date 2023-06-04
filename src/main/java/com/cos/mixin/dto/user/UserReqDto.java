@@ -2,7 +2,6 @@ package com.cos.mixin.dto.user;
 
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -11,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.cos.mixin.domain.user.User;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.Setter;
 
 public class UserReqDto {

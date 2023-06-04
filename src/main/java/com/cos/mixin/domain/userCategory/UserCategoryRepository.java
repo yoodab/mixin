@@ -12,10 +12,10 @@ public interface UserCategoryRepository extends JpaRepository<UserCategory, Long
 	List<UserCategory> findByUserId(Long userId);
 	
 	@Modifying 
-	@Query(value = "INSERT INTO usercategory (userId, categoryId) VALUES (:userId, (SELECT id FROM category WHERE category = :categoryName))", nativeQuery = true)
+	@Query(value = "INSERT INTO usercategory (userId, categoryId) VALUES (:userId, (SELECT id FROM category WHERE categoryName = :categoryName))", nativeQuery = true)
 	void mSetUserCategory(Long userId, String categoryName); 
 	
 	@Modifying 
-	@Query(value = "DELETE FROM usercategory WHERE userId = :userId AND categoryId = (SELECT id FROM category WHERE category = :categoryName)", nativeQuery = true)
+	@Query(value = "DELETE FROM usercategory WHERE userId = :userId AND categoryId = (SELECT id FROM category WHERE categoryName = :categoryName)", nativeQuery = true)
 	void mDelUserCategory(Long userId, String categoryName);
 }

@@ -26,6 +26,6 @@ public class Category {
 	private int id;
 	
 	@Column(unique = true)
-	private String category;
+	private String categoryName;
 	
 }

@@ -28,6 +28,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.cos.mixin.domain.category.Category;
 import com.cos.mixin.domain.userCategory.UserCategory;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -80,12 +82,13 @@ public class User {
 	private String userDepartment;
 	
 	// 카테고리
+	@JsonIgnoreProperties({"user"})
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<UserCategory> userCategorys;
 	
 	
-
-	@OneToOne(mappedBy = "user")
+	@JsonIgnoreProperties({"user"})
+	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
 	private UserProfile userProfile;
 	
 	// 권한

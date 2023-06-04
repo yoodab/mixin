@@ -1,20 +1,15 @@
 package com.cos.mixin.dto.school;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class SchoolDto {
-
-	@Setter
-    @Getter
-    public static class SchoolNameDto {
-        private String SchoolName;
-    }
-	
-	
-	@Setter
-    @Getter
-	public static class SchoolDepartmentDto{
-		private String Department;
-	}
+	private String schoolName;
+    private String address;
 }

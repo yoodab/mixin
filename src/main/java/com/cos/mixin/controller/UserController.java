@@ -37,19 +37,21 @@ public class UserController {
         return new ResponseEntity<>(new ResponseDto<>(1, "회원가입 성공", joinRespDto), HttpStatus.CREATED);
     }
     
-    @PostMapping("/category")
-    public ResponseEntity<?> category(@AuthenticationPrincipal LoginUser loginUser, @RequestBody SetCategoryReqDto setCategoryReqDto) {
+    @PostMapping("/user/category")
+    public ResponseEntity<?> setuserCategory(@AuthenticationPrincipal LoginUser loginUser, @RequestBody SetCategoryReqDto setCategoryReqDto) {
     	userService.유저카테고리등록(loginUser.getUser().getId(), setCategoryReqDto.getCategorys());
-        return new ResponseEntity<>(new ResponseDto<>(1, "카테고리 설정 성공", null), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDto<>(1, "유저카테고리 설정 성공", null), HttpStatus.CREATED);
     }
+    
     
     
     @GetMapping("/user")
     public ResponseEntity<?> profile(@AuthenticationPrincipal LoginUser loginUser) {
-    	System.out.println(loginUser.getUser().getId());
     	User userEntity = userService.유저정보보기(loginUser.getUser().getId());
     	return new ResponseEntity<>(new ResponseDto<>(1, "프로필정보", userEntity), HttpStatus.OK);
     }
+    
+    
     
 
     

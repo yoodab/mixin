@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,5 +26,6 @@ public class Departments {
 	
 	@ManyToOne
     @JoinColumn(name = "collegeId")
+	@JsonIgnoreProperties("departments")
 	private College college;
 }

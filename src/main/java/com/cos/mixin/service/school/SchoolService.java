@@ -12,6 +12,7 @@ import com.cos.mixin.domain.school.School;
 import com.cos.mixin.domain.school.SchoolRepository;
 import com.cos.mixin.domain.school.data.Content;
 import com.cos.mixin.domain.school.data.DataSearch;
+import com.cos.mixin.dto.school.SchoolDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,8 @@ public class SchoolService {
 
 	private final SchoolRepository schoolRepository;
 
-	public List<School> 학교명() {
-		List<School> schoolName = schoolRepository.findByAllSchoolName();
+	public List<SchoolDto> 학교명() {
+		List<SchoolDto> schoolName = schoolRepository.findAllSchoolNamesAndAddresses();
 		return schoolName;
 	}
 
@@ -47,7 +48,7 @@ public class SchoolService {
 			for (Content content : contentList) {
 				School school = new School();
 
-				school.setId(i++);
+				school.setId(++i);
 				school.setSchoolName(content.getSchoolName());
 				school.setAddress(content.getAdres());
 
