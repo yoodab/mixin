@@ -23,6 +23,25 @@ public class UserRespDto {
             this.isFirstLogin = user.getUserCategorys().isEmpty();
         }
     }
+	
+	@ToString
+    @Setter
+    @Getter
+	public static class FindIdRespDto {
+		
+		private String userEmail;
+	}
+	
+	@ToString
+    @Setter
+    @Getter
+	public static class FindPasswordRespDto {
+		
+		private String userEmail;
+		
+		private String userPhoneNumber;
+	}
+	
 
     @ToString
     @Setter

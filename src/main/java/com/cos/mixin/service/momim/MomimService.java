@@ -35,6 +35,10 @@ public class MomimService {
 		return null;
 	}
 
+	public void 코드모임검색() {
+		
+	}
+	
 	public void 전체모임정보() {
 
 	}

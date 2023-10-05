@@ -1,19 +1,7 @@
 package com.cos.mixin.dto.user;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cos.mixin.domain.user.User;
@@ -45,10 +33,22 @@ public class UserProfileDto {
 			return UserProfile.builder()
 					.user(user)
 					.position(userPosition)
-					.personality(userPersonality)
+					.personalitys(userPersonality)
 					.userValues(userValues)
 					.nickname(userNickName)
 					.profilePictureUrl(profilePictureUrl)
+					.introduction(userIntroduceText)
+					.userSmileDegree(userSmileDegree)
+					.build();
+		}
+		
+		public UserProfile toEntity(String userPersonality, User user) {
+			return UserProfile.builder()
+					.user(user)
+					.position(userPosition)
+					.personalitys(userPersonality)
+					.userValues(userValues)
+					.nickname(userNickName)
 					.introduction(userIntroduceText)
 					.userSmileDegree(userSmileDegree)
 					.build();

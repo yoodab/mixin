@@ -1,6 +1,7 @@
 package com.cos.mixin.domain.user;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +43,7 @@ public class UserProfile {
 	// 역할
 	private String position;
 	// 성격
-	private String personality;
+	private String personalitys;
 	// 가치관
 	private String userValues;
 	// 별명
@@ -63,12 +64,12 @@ public class UserProfile {
 	private LocalDateTime updatedAt;
 
 	@Builder
-	public UserProfile(Long id, User user, String position, String personality, String userValues, String nickname,
+	public UserProfile(Long id, User user, String position, String personalitys, String userValues, String nickname,
 			String profilePictureUrl, String introduction, int userSmileDegree, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		this.id = id;
 		this.user = user;
 		this.position = position;
-		this.personality = personality;
+		this.personalitys = personalitys;
 		this.userValues = userValues;
 		this.nickname = nickname;
 		this.profilePictureUrl = profilePictureUrl;

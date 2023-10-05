@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.cos.mixin.dto.verification.VerificationReqDto.EmailReqDto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class EmailVerification {
+public class JoinEmailVerification {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,12 +29,20 @@ public class EmailVerification {
     private LocalDateTime requestTime;
     private int requestCount;
     
-    
     @Builder
-	public EmailVerification(String userEmail, String code, LocalDateTime requestTime, int requestCount) {
+	public JoinEmailVerification(String userEmail, String code, LocalDateTime requestTime, int requestCount) {
 		this.userEmail = userEmail;
 		this.code = code;
 		this.requestTime = requestTime;
 		this.requestCount = requestCount;
+	}
+    
+    @Builder
+	public JoinEmailVerification(EmailReqDto emailReqDto) {
+    	this.id = emailReqDto.getId();
+		this.userEmail = emailReqDto.getUserEmail();
+		this.code = emailReqDto.getCode();
+		this.requestTime = emailReqDto.getRequestTime();
+		this.requestCount = emailReqDto.getRequestCount();
 	}
 }

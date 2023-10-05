@@ -24,7 +24,11 @@ public class UserReqDto {
     public static class SetCategoryReqDto {
 		private List<String> categorys;
     }
-	
+	@Data
+	public static class UpdateUserPasswordDto {
+		private String userEmail;
+		private String userPassword;
+	}
 	
 	@Data
     public static class JoinReqDto {

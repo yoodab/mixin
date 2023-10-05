@@ -30,7 +30,9 @@ import com.cos.mixin.domain.user.UserEnum;
 import com.cos.mixin.domain.user.UserRepository;
 import com.cos.mixin.domain.userCategory.UserCategory;
 import com.cos.mixin.domain.userCategory.UserCategoryRepository;
+import com.cos.mixin.domain.verification.email.JoinEmailVerification;
 import com.cos.mixin.dto.user.UserReqDto.JoinReqDto;
+import com.cos.mixin.dto.user.UserReqDto.UpdateUserPasswordDto;
 import com.cos.mixin.dto.user.UserRespDto.JoinRespDto;
 import com.cos.mixin.handler.ex.CustomApiException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -68,6 +70,16 @@ public class UserService {
 		// 4. dto 응답
 		return new JoinRespDto(userPS);
 	}
+	
+	@Transactional
+	public User 유저비밀번호수정(UpdateUserPasswordDto updateUserPasswordDto) {
+		User userEntity = userRepository.findByUserEmail(updateUserPasswordDto.getUserEmail()).orElseThrow(() -> new CustomApiException("User not found"));
+		String rawPassword = updateUserPasswordDto.getUserPassword();
+		String encPassword = passwordEncoder.encode(rawPassword);
+		userEntity.setUserPassword(encPassword);
+		return userEntity;
+	}
+	
 
 	@Transactional
 	public void 유저카테고리등록(long id, List<String> categorys) {
@@ -127,4 +139,18 @@ public class UserService {
 		User userEntity = userRepository.findById(id).get();
 		return userEntity;
 	}
+	
+	public Optional<User> 유저번호검색(String userPhoneNumber) {
+		Optional<User> userEntity = userRepository.findByUserPhoneNumber(userPhoneNumber);
+		System.out.println("========================");
+		System.out.println(userPhoneNumber);
+		System.out.println("========================");
+		return userEntity;
+	}
+	
+	public Optional<User> 유저이메일검색(String userEmail) {
+		Optional<User> userEntity = userRepository.findByUserEmail(userEmail);
+		return userEntity;
+	}
+	
 }

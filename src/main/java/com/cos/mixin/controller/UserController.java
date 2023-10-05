@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import com.cos.mixin.domain.user.User;
 import com.cos.mixin.dto.ResponseDto;
 import com.cos.mixin.dto.user.UserReqDto.JoinReqDto;
 import com.cos.mixin.dto.user.UserReqDto.SetCategoryReqDto;
+import com.cos.mixin.dto.user.UserReqDto.UpdateUserPasswordDto;
 import com.cos.mixin.dto.user.UserRespDto.JoinRespDto;
 import com.cos.mixin.service.user.UserProfileService;
 import com.cos.mixin.service.user.UserService;
@@ -25,7 +27,6 @@ import com.cos.mixin.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RequestMapping("/api")
 @RestController
 public class UserController {
 	private final UserService userService;
@@ -37,7 +38,7 @@ public class UserController {
         return new ResponseEntity<>(new ResponseDto<>(1, "회원가입 성공", joinRespDto), HttpStatus.CREATED);
     }
     
-    @PostMapping("/user/category")
+    @PostMapping("/api/user/category")
     public ResponseEntity<?> setuserCategory(@AuthenticationPrincipal LoginUser loginUser, @RequestBody SetCategoryReqDto setCategoryReqDto) {
     	userService.유저카테고리등록(loginUser.getUser().getId(), setCategoryReqDto.getCategorys());
         return new ResponseEntity<>(new ResponseDto<>(1, "유저카테고리 설정 성공", null), HttpStatus.CREATED);
@@ -45,15 +46,18 @@ public class UserController {
     
     
     
-    @GetMapping("/user")
+    @GetMapping("/api/user")
     public ResponseEntity<?> profile(@AuthenticationPrincipal LoginUser loginUser) {
     	User userEntity = userService.유저정보보기(loginUser.getUser().getId());
     	return new ResponseEntity<>(new ResponseDto<>(1, "프로필정보", userEntity), HttpStatus.OK);
     }
     
     
-    
-
+    @PutMapping("/api/password/update")
+    public ResponseEntity<?> passwordUpdate(@RequestBody UpdateUserPasswordDto updateUserPasswordDto) {
+    	User userEntity = userService.유저비밀번호수정(updateUserPasswordDto);
+    	return new ResponseEntity<>(new ResponseDto<>(1, "비밀번호변경 완료", userEntity), HttpStatus.OK);
+    }
     
    
 }

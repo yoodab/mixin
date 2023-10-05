@@ -2,12 +2,10 @@ package com.cos.mixin.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,10 +46,11 @@ public class MomimController {
     }
 	
 	@PostMapping("/momim/create")
-    public ResponseEntity<?> momimCreate(@AuthenticationPrincipal LoginUser loginUser,@RequestPart(value = "file") MultipartFile file, @RequestPart(value = "CreateMomimReqDto") @Valid CreateMomimReqDto createMomimReqDto, BindingResult bindingResult) {
+    public ResponseEntity<?> momimCreate(@AuthenticationPrincipal LoginUser loginUser,@RequestPart MultipartFile file,
+    		@RequestPart CreateMomimReqDto data) {
         System.out.println(file);
-		createMomimReqDto.setMomimThumbnailFile(file);
-		momimService.모임생성(createMomimReqDto,loginUser);
+        data.setMomimThumbnailFile(file);
+		momimService.모임생성(data,loginUser);
         return new ResponseEntity<>(new ResponseDto<>(1, "모임 생성 성공", null), HttpStatus.CREATED);
     }
 	

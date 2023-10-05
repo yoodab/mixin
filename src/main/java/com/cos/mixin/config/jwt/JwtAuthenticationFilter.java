@@ -32,7 +32,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         super(authenticationManager);
         setUsernameParameter("userEmail");
         setPasswordParameter("userPassword");
-        setFilterProcessesUrl("/api/login");
+        setFilterProcessesUrl("/login");
         
         this.authenticationManager = authenticationManager;
     }

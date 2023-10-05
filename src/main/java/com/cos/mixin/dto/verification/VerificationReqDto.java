@@ -1,7 +1,7 @@
 package com.cos.mixin.dto.verification;
 
+import java.time.LocalDateTime;
 import java.util.List;
-
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +10,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class VerificationReqDto {
+
+	
+	
+	
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Setter
+	@Getter
+	@Builder
+	public static class FindPasswordDto {
+		private String emailOrPhoneNum;
+		
+	}
 	
 	@AllArgsConstructor
 	@NoArgsConstructor
@@ -22,7 +35,7 @@ public class VerificationReqDto {
 		private String to;		
 	    private String content;
 	}
-	
+
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Setter
@@ -30,11 +43,12 @@ public class VerificationReqDto {
 	@Builder
 	public static class SmsCheckDto {
 		// 번호
-		private String userPhoneNumber;		
-		// 인증번호 
-		private String code;	
+		private String userPhoneNumber;
+		// 인증번호
+		private String code;
+		
+		private String verificationType;
 	}
-	
 
 	@AllArgsConstructor
 	@NoArgsConstructor
@@ -49,7 +63,22 @@ public class VerificationReqDto {
 		String content;
 		List<SmsDto> messages;
 	}
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Setter
+	@Getter
+	@Builder
+	public static class SmsVeriDto{
+		private Long id;
+	    private String userPhoneNumber;
+	    private String code;
+	    private String userName;
+	    private LocalDateTime requestTime;
+	    private int requestCount;
+	    private String verificationType;
+	}
 	
+
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Setter
@@ -57,10 +86,28 @@ public class VerificationReqDto {
 	@Builder
 	public static class EmailDto {
 		// email
-		private String userEmail; 
+		private String userEmail;
+		private String verificationType;
 
 	}
 	
+	
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Setter
+	@Getter
+	@Builder
+	public static class EmailReqDto {
+		
+		private Long id;
+	    private String userEmail;
+	    private String code;
+	    private LocalDateTime requestTime;
+	    private int requestCount;
+
+	}
+	
+
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Setter
@@ -69,11 +116,12 @@ public class VerificationReqDto {
 	public static class EmailCheckDto {
 		// email
 		private String userEmail;
-		// 인증번호 
+		// 인증번호
 		private String code;
+		
+		private String verificationType;
 	}
-	
-	
+
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Setter
